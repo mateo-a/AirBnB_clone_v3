@@ -26,7 +26,7 @@ def review_by_id(place_id):
 @app_views.route("/reviews/<review_id>", methods=['GET'],
                  strict_slashes=False)
 def review_object(review_id):
-    """ """
+    """ all review of and object """
     rev = storage.get("Review", review_id)
     if rev:
         return jsonify(rev.to_dict())
@@ -37,7 +37,7 @@ def review_object(review_id):
 @app_views.route("/reviews/<review_id>", methods=['DELETE'],
                  strict_slashes=False)
 def delete_review(review_id):
-    """ """
+    """ Delete an object eith ther ID"""
     review = storage.get("Review", review_id)
     if review is None:
         abort(404)
@@ -55,7 +55,7 @@ def create_review(place_id):
         abort(404)
     content = request.get_json()
     if content is None:
-        abort(400, "Not a JSON")
+        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     if "user_id" not in content:
         abort(400, 'Missing user_id')
     elif itm_locator(content['user_id'], 'User') is False:
