@@ -29,7 +29,6 @@ class User(BaseModel, Base):
         """initializes user"""
         if kwargs:
             kwargs.pop('password', None)
-            print("Pwd--> {}".format(pwd))
             User.set_password_md5(self, pwd)
         super().__init__(*args, **kwargs)
 
