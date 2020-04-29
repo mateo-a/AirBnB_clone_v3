@@ -72,13 +72,13 @@ def create_review(place_id):
                  strict_slashes=False)
 def put_review(review_id):
     """ Update review object method """
+    req = request.get_json()
+    if not req:
+        abort(400, 'Not a JSON')
     rev = storage.get("Review", review_id)
     ignore_list = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']
     if rev is None:
         abort(404)
-    req = request.get_json()
-    if not req:
-        abort(400, 'Not a JSON')
     for key, val in req.items():
         if key not in ignore_list:
             setattr(rev, key, val)
