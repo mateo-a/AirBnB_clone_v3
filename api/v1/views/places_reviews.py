@@ -51,39 +51,39 @@ def delete_review(review_id):
 def create_review(place_id):
     """ create a new review object """
     place = storage.get("Place", place_id)
-    if place is None:
+    if not place:
         abort(404)
-    content = request.get_json()
-    if content is None:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
-    if "user_id" not in content:
+    kwargs = request.get_json()
+    if kwargs is None:
+        abort(400, 'Not a JSON')
+    if "user_id" not in kwargs:
         abort(400, 'Missing user_id')
-    elif itm_locator(content['user_id'], 'User') is False:
+    elif itm_locator(kwargs['user_id'], 'User') is False:
         abort(404)
-    if "text" not in content:
+    if "text" not in kwargs:
         abort(400, 'Missing text')
-    content['place_id'] = place_id
-    review = Review(**content)
+    kwargs['place_id'] = place_id
+    review = Review(**kwargs)
     review.save()
-    return jsonify(review.to_dict()), 200
+    return jsonify(review.to_dict()), 201
 
 
 @app_views.route("/reviews/<review_id>", methods=['PUT'],
                  strict_slashes=False)
 def put_review(review_id):
     """ Update review object method """
-    rev = storage.get("Review", review_id)
-    if rev is None:
-        abort(404)
-    req = request.get_json()
-    if not req:
-        return make_response(jsonify({'error': 'Not a JSON'}), 400)
     ignore_list = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']
-    for key, val in req.items():
+    review = storage.get("Review", review_id)
+    if not review:
+        abort(404)
+    kwargs = request.get_json()
+    if kwargs is None:
+        abort(400, 'Not a JSON')
+    for key, val in kwargs.items():
         if key not in ignore_list:
-            setattr(rev, key, val)
-    rev.save()
-    return jsonify(rev.to_dict())
+            setattr(review, key, val)
+    review.save()
+    return jsonify(review.to_dict()), 200
 
 
 def itm_locator(id, item):
