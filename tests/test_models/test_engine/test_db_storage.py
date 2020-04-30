@@ -21,7 +21,6 @@ import unittest
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
-storage_t = DBStorage()
 
 
 class TestDBStorageDocs(unittest.TestCase):
