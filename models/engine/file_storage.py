@@ -82,4 +82,3 @@ class FileStorage:
         """method to count the number of objects in storage"""
         cont = len(self.all(cls))
         return(cont)
-        

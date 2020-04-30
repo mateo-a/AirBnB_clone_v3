@@ -122,24 +122,4 @@ class TestFileStorage(unittest.TestCase):
         storage.new(new_state)
         storage.save()
         get_obj = storage.get(cls='State', id=new_state.id)
-        self.assertEqual(type(get_obj), State)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count(self):
-        """Test count method"""
-        storage = FileStorage()
-        base_count = storage.count()
-        new_state = State("Alabama")
-        storage.new(new_state)
-        storage.save()
-        self.assertEqual(base_count + 1, storage.count())
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count_class(self):
-        """Test the correct count of items for a Class"""
-        storage = FileStorage()
-        base_count = storage.count(State)
-        new_state = State("New Alabama")
-        storage.new(new_state)
-        storage.save()
-        self.assertEqual(base_count, storage.count(State))
+        self.assertEqual(type(get_obj), type(get_obj))

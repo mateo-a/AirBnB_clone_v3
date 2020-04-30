@@ -82,7 +82,7 @@ class DBStorage:
                 cls = classes.get(cls)
             else:
                 return None
-        qry = self.__session.query(cls).filter_by(id = id).first()
+        qry = self.__session.query(cls).filter_by(id=id).first()
         return qry
 
     def count(self, cls=None):
