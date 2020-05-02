@@ -70,18 +70,14 @@ test_file_storage.py'])
 
     def test_get(self):
         """Test a method to retrieve one object"""
-        storage = FileStorage()
-        value = State("Alabama")
-        value.save()
-        get_value = storage.get(State, value.id)
-        self.assertEqual(type(get_value), State)
+        value = list(storage.all(State).values())[0].id
+        get_value = storage.get(value)
+        self.assertEqual(type(get_value), models.state.State)
 
     def test_count(self):
         """Test a method to count the number of objects in storage"""
-        storage = FileStorage()
-        value = State("Alabama")
-        value_count = storage.count(State)
-        self.assertEqual(value_count, storage.count(State))
+        value = storage.count()
+        self.assertEqual(type(value), int)
 
     def test_count_error(self):
         """Test count error"""
