@@ -6,6 +6,7 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 from datetime import datetime
 import inspect
 import models
+from models import storage
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -71,13 +72,13 @@ test_db_storage.py'])
         """Test a method to retrieve one object"""
         value = State("Alabama")
         value.save()
-        get_value = models.storage.get(State, value.id)
+        get_value = storage.get(State, value.id)
         self.assertEqual(type(get_value), State)
 
     def test_count(self):
         """Test a method to count the number of objects in storage"""
-        value_count = models.storage.count(State)
-        self.assertEqual(value_count, models.storage.count(State))
+        value_count = storage.count(State)
+        self.assertEqual(value_count, storage.count(State))
 
     def test_count_error(self):
         """Test count error"""
@@ -90,7 +91,7 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
-        pass
+        self.assertIs(type(models.storage.all()), dict)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_no_class(self):
