@@ -67,6 +67,23 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+    def test_get(self):
+        """Test a method to retrieve one object"""
+        value = State("Alabama")
+        value.save()
+        get_value = models.storage.get(State, value.id)
+        self.assertEqual(type(get_value), State)
+
+    def test_count(self):
+        """Test a method to count the number of objects in storage"""
+        value_count = models.storage.count(State)
+        self.assertEqual(value_count, models.storage.count(State))
+
+    def test_count_error(self):
+        """Test count error"""
+        with self.assertRaises(NameError):
+            storage.count(text)
+
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
@@ -89,17 +106,3 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """Test that save properly saves objects to file.json"""
         pass
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_get(self):
-        """Test a method to retrieve one object"""
-        value = State("Alabama")
-        value.save()
-        get_value = models.storage.get(State, value.id)
-        self.assertEqual(type(get_value), State)
-
-    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_count(self):
-        """Test a method to count the number of objects in storage"""
-        value_count = models.storage.count(State)
-        self.assertEqual(value_count, models.storage.count(State))
