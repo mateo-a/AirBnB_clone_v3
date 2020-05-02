@@ -71,7 +71,7 @@ test_file_storage.py'])
     def test_get(self):
         """Test a method to retrieve one object"""
         value = list(storage.all(State).values())[0].id
-        get_value = storage.get(value)
+        get_value = storage.get(State, value)
         self.assertEqual(type(get_value), models.state.State)
 
     def test_count(self):
