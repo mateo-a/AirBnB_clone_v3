@@ -90,19 +90,37 @@ class TestFileStorage(unittest.TestCase):
 
     def test_get(self):
         """Test a method to retrieve one object"""
-        """value = list(storage.all(State).values())[0].id
+        value = list(storage.all(State).values())[0].id
         get_value = storage.get(State, value)
-        self.assertEqual(type(get_value), models.state.State)"""
-        pass
+        self.assertEqual(type(get_value), models.state.State)
 
     def test_count(self):
         """Test a method to count the number of objects in storage"""
-        """value = storage.count()
-        self.assertEqual(type(value), int)"""
-        pass
+        value = storage.count()
+        self.assertEqual(type(value), int)
 
     def test_count_error(self):
         """Test count error"""
-        """with self.assertRaises(NameError):
-            storage.count(text)"""
-        pass
+        with self.assertRaises(NameError):
+            storage.count(text)
+
+    def test_get_db(self):
+        """Test get instance of object"""
+        dic = {"name": "Alabama"}
+        state = State(**dic)
+        storage.new(state)
+        storage.save()
+        get_state = storage.get(State, state.id)
+        self.assertEqual(get_state, state)
+
+    def test_count(self):
+        """Test count number of objects in storage"""
+        dic = {"name": "Florida"}
+        state = State(**dic)
+        storage.new(state)
+        dic = {"name": "Oregon", "state_id": state.id}
+        city = City(**dic)
+        storage.new(city)
+        storage.save()
+        coun = storage.count()
+        self.assertEqual(len(storage.all()), coun)
