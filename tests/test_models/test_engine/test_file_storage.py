@@ -68,22 +68,6 @@ test_file_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
-    def test_get(self):
-        """Test a method to retrieve one object"""
-        value = list(storage.all(State).values())[0].id
-        get_value = storage.get(State, value)
-        self.assertEqual(type(get_value), models.state.State)
-
-    def test_count(self):
-        """Test a method to count the number of objects in storage"""
-        value = storage.count()
-        self.assertEqual(type(value), int)
-
-    def test_count_error(self):
-        """Test count error"""
-        with self.assertRaises(NameError):
-            storage.count(text)
-
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
@@ -130,3 +114,22 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test a method to retrieve one object"""
+        value = list(storage.all(State).values())[0].id
+        get_value = storage.get(State, value)
+        self.assertEqual(type(get_value), models.state.State)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        """Test a method to count the number of objects in storage"""
+        value = storage.count()
+        self.assertEqual(type(value), int)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_error(self):
+        """Test count error"""
+        with self.assertRaises(NameError):
+            storage.count(text)
